@@ -2,12 +2,40 @@
 
 var _ = require('lodash');
 var Stock = require('./stock.model');
+var yahoo = require('yahoo-finance');
+var async = require('async');
 
 // Get list of stocks
 exports.index = function(req, res) {
   Stock.find(function (err, stocks) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(stocks);
+  });
+};
+
+
+// get historical graph data for all symbols in db
+exports.graphAll = function (req, res) {
+  Stock.find(function (err, stocks) {
+    if(err) { return handleError(res, err); }
+    var compiled = {};
+    async.forEach(stocks, function (stock, callback) {
+      yahoo.historical({
+        symbol: stock.symbol,
+        from: '2012-06-01',
+        to: '2012-12-31',
+      }, function (err, quotes) {
+        if (err) {
+          callback(err);
+        } else {
+          compiled[stock.symbol] = quotes;
+          callback();
+        }
+      });
+    }, function (err) {
+      if (err) {return handleError(res, err); }
+      return res.status(200).json(compiled);
+    });
   });
 };
 
