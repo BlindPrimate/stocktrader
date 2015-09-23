@@ -6,6 +6,7 @@
 'use strict';
 
 var Thing = require('../api/thing/thing.model');
+var Stock = require('../api/stock/stock.model');
 
 
 Thing.find({}).remove(function() {
@@ -27,5 +28,14 @@ Thing.find({}).remove(function() {
   },{
     name : 'Deployment Ready',
     info : 'Easily deploy your app to Heroku or Openshift with the heroku and openshift subgenerators'
+  });
+});
+
+
+Stock.find({}).remove(function() {
+  Stock.create({
+    symbol: 'AAPL',
+  },{
+    symbol: 'MSFT'
   });
 });

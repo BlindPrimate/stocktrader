@@ -2,26 +2,33 @@
 
 angular.module('stocktraderApp')
   .controller('MainCtrl', function ($scope, $http, socket) {
-    $scope.awesomeThings = [];
 
-    $http.get('/api/things').success(function(awesomeThings) {
-      $scope.awesomeThings = awesomeThings;
-      socket.syncUpdates('thing', $scope.awesomeThings);
+    var init = function () {
+        $scope.stocks = {};
+    }
+
+
+    $http.get('/api/stocks').success(function(stocks) {
+      $scope.stocks = stocks;
+      socket.syncUpdates('stock', $scope.stocks);
     });
 
-    $scope.addThing = function() {
-      if($scope.newThing === '') {
+    $scope.addStock = function() {
+      if($scope.newStock === '') {
         return;
       }
-      $http.post('/api/things', { name: $scope.newThing });
-      $scope.newThing = '';
+      $http.post('/api/stocks', { symbol: $scope.newStock });
+      $scope.newStock = '';
     };
 
-    $scope.deleteThing = function(thing) {
-      $http.delete('/api/things/' + thing._id);
+    $scope.deleteStock = function(stock) {
+      console.log('check');
+      $http.delete('/api/stocks/' + stock._id);
     };
 
     $scope.$on('$destroy', function () {
-      socket.unsyncUpdates('thing');
+      socket.unsyncUpdates('stock');
     });
+
+    init();
   });
