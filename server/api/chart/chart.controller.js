@@ -7,12 +7,14 @@ var yahoo = require('yahoo-finance');
 var async = require('async');
 
 
+// returns series data (stock symbols)
 function retrieveSeries(stockData) {
   return stockData.map(function (stock) {
     return stock.symbol;
   });
 }
 
+// returns formatted list of chart labels
 function retrieveLabels(quoteData) {
   var labels = [];
   quoteData.forEach(function (quote) {
@@ -24,6 +26,7 @@ function retrieveLabels(quoteData) {
   return labels;
 }
 
+// returns formatted list of stock price data
 function retrievePrices(quoteData) {
   var prices = [];
   quoteData.forEach(function (quote) {
@@ -32,36 +35,53 @@ function retrievePrices(quoteData) {
   return prices;
 }
 
-//function pruneData(yahooData) {
-  //var currLength = yahooData.length;
-  //if (currLength > 10) {
-     
-  //} else {
-    //return yahooData;
-  //}
-//}
+// returns date x months ago from current time
+function xMonthsAgo(months) {
+  var date = new Date();
+  date.setMonth(date.getMonth() - months);
+  return date;
+}
 
 
 // get historical graph data for all symbols in db
 exports.graphAll = function (req, res) {
+
+  // optional parameters
+  // allows range of dates to be selected for chart data
+  // defaults to six months
+  if (req.query.fromDate) {
+    var fromDate = req.query.fromDate;
+  } else {
+    var fromDate = xMonthsAgo(6);
+  }
+
+  if (req.query.toDate) {
+    var toDate = req.query.toDate;
+  } else {
+    var toDate = new Date();
+  }
+  // end optional parameters
+
+
   Stock.find(function (err, stocks) {
     if(err) { return handleError(res, err); }
     var compiled = {
-      series: retrieveSeries(stocks),
+      series: [],
       labels: [],
       prices: []
     };
     async.forEach(stocks, function (stock, callback) {
       yahoo.historical({
         symbol: stock.symbol,
-        from: '2015-08-01',
-        to: '2015-08-24',
+        from: fromDate,
+        to: toDate
       }, function (err, quotes) {
         if (err) {
           callback(err);
         } else {
           var prices = retrievePrices(quotes);
           compiled.prices.push(prices);
+          compiled.series.push(stock.symbol);
           if (compiled.labels.length < 1) {
             compiled.labels = retrieveLabels(quotes);
           }

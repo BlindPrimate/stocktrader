@@ -37,5 +37,7 @@ Stock.find({}).remove(function() {
     symbol: 'AAPL',
   },{
     symbol: 'MSFT'
+  }, {
+    symbol: 'GOOGL'
   });
 });
