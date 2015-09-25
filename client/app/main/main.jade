@@ -1,10 +1,12 @@
 .container.col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1.col-sm-12
-  canvas(id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-legend="true" chart-series="series" chart-click="onClick")
+  canvas(id="line" class="chart chart-line" chart-data="prices" chart-labels="labels" chart-legend="true" chart-series="series" chart-click="onClick")
   ul.list-group.row
     li.list-group-item.clearfix.col-lg-3.col-md-4.col.sm-6(ng-repeat="stock in stocks") {{stock.symbol}}
       button.btn.btn-danger.pull-right(ng-click="deleteStock(stock)") delete
 
-  
+  {{series}}
+  {{prices}}
+  {{labels}}
   form.new-stock-form
     p.input-group
       input.form-control(type='text', placeholder='Add a new stock here.', ng-model='newStock')

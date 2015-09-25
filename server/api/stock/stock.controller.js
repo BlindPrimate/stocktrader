@@ -14,33 +14,11 @@ exports.index = function(req, res) {
 };
 
 
-// get historical graph data for all symbols in db
-exports.graphAll = function (req, res) {
-  Stock.find(function (err, stocks) {
-    if(err) { return handleError(res, err); }
-    var compiled = {};
-    async.forEach(stocks, function (stock, callback) {
-      yahoo.historical({
-        symbol: stock.symbol,
-        from: '2012-06-01',
-        to: '2012-12-31',
-      }, function (err, quotes) {
-        if (err) {
-          callback(err);
-        } else {
-          compiled[stock.symbol] = quotes;
-          callback();
-        }
-      });
-    }, function (err) {
-      if (err) {return handleError(res, err); }
-      return res.status(200).json(compiled);
-    });
-  });
-};
-
 // Get a single stock
-exports.show = function(req, res) {
+exports.show = function(req, res, next) {
+  if (req.id = '') {
+    next();
+  }
   Stock.findById(req.params.id, function (err, stock) {
     if(err) { return handleError(res, err); }
     if(!stock) { return res.status(404).send('Not Found'); }
