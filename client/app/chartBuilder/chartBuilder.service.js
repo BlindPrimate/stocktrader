@@ -23,6 +23,12 @@ angular.module('stocktraderApp')
         var fromTime = xMonthsAgo(timePeriod);
         var toTime = new Date();
         return $http.get(url + "?fromDate=" + fromTime + "&toTime=" + toTime);
+      },
+      chartOptions: {
+        animationSteps: 40,
+        bezierCurveTension: 0.2,
+        pointDot: false,
+        datasetFill: false,
       }
     }
   });

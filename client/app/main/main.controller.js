@@ -6,11 +6,14 @@ angular.module('stocktraderApp')
     var init = function () {
         $scope.stocks = {};
         $scope.getChartData(6);
+        $scope.chartOptions = chartBuilder.chartOptions;
+        $scope.currSpan = 6;
     }
 
     // get chart data from x months ago
     $scope.getChartData = function (timeInMonths) {
       chartBuilder.chartDataHistorical(timeInMonths).then(function (chartData) {
+        $scope.currSpan = timeInMonths;
         $scope.labels = chartData.data.labels;
         $scope.series = chartData.data.series;
         $scope.prices = chartData.data.prices;

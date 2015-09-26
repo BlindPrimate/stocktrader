@@ -17,11 +17,12 @@ function retrieveSeries(stockData) {
 // returns formatted list of chart labels
 function retrieveLabels(quoteData) {
   var labels = [];
+  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   quoteData.forEach(function (quote) {
     var month = quote.date.getMonth() + 1;
     var day = quote.date.getDate();
     var year = quote.date.getFullYear() ;
-    labels.push(month + '-' + day + '-' + year);
+    labels.push(months[month] + ' ' + day + ', ' + year);
   });
   return labels;
 }
