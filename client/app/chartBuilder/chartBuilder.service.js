@@ -22,12 +22,13 @@ angular.module('stocktraderApp')
       chartDataHistorical: function (timePeriod) {
         var fromTime = xMonthsAgo(timePeriod);
         var toTime = new Date();
-        return $http.get(url + "?fromDate=" + fromTime + "&toTime=" + toTime);
+        return $http.get(url + "?fromDate=" + fromTime + "&toDate=" + toTime);
       },
       chartOptions: {
         animationSteps: 40,
         bezierCurveTension: 0.2,
-        pointDot: false,
+        pointDotRadius: 3,
+        pointHitDetectionRadius: 1,
         datasetFill: false,
       }
     }

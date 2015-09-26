@@ -19,7 +19,7 @@ function retrieveLabels(quoteData) {
   var labels = [];
   var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   quoteData.forEach(function (quote) {
-    var month = quote.date.getMonth() + 1;
+    var month = quote.date.getMonth();
     var day = quote.date.getDate();
     var year = quote.date.getFullYear() ;
     labels.push(months[month] + ' ' + day + ', ' + year);
@@ -50,17 +50,15 @@ exports.graphAll = function (req, res) {
   // optional parameters
   // allows range of dates to be selected for chart data
   // defaults to six months
-  if (req.query.fromDate) {
+  console.log(req.query.fromDate, req.query.toDate)
+  if (req.query.fromDate && req.query.toDate) {
     var fromDate = req.query.fromDate;
-  } else {
-    var fromDate = xMonthsAgo(6);
-  }
-
-  if (req.query.toDate) {
     var toDate = req.query.toDate;
   } else {
+    var fromDate = xMonthsAgo(6);
     var toDate = new Date();
   }
+
   // end optional parameters
 
 
@@ -83,7 +81,7 @@ exports.graphAll = function (req, res) {
           var prices = retrievePrices(quotes);
           compiled.prices.push(prices);
           compiled.series.push(stock.symbol);
-          if (compiled.labels.length < 1) {
+          if (compiled.labels.length <= 1) {
             compiled.labels = retrieveLabels(quotes);
           }
           callback();

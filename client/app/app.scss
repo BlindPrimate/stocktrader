@@ -15,6 +15,14 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
     padding: 0.2em 0;
 }
 
+.btn-group-wrapper {
+    margin: 40px auto 20px;
+    display: block;
+    width: inherit;
+    text-align: center;
+}
+
+
 // Component styles are injected through grunt
 // injector
 @import 'main/main.scss';

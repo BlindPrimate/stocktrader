@@ -1,9 +1,11 @@
 .container.col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1.col-sm-12
-  .btn-group
-    button.btn.btn-default(type='button' ng-click="getChartData(1)" ng-class="{active: currSpan === 1}") 1 month
-    button.btn.btn-default(type='button' ng-click="getChartData(3)" ng-class="{active: currSpan === 3}") 3 months
-    button.btn.btn-default(type='button' ng-click="getChartData(6)" ng-class="{active: currSpan === 6}") 6 months
-    button.btn.btn-default(type='button' ng-click="getChartData(12)" ng-class="{active: currSpan === 12}") 12 months
+  .btn-group-wrapper
+    .btn-group
+      button.btn.btn-default(type='button' ng-click="getChartData(1)" ng-class="{active: currSpan === 1}") 1 month
+      button.btn.btn-default(type='button' ng-click="getChartData(3)" ng-class="{active: currSpan === 3}") 3 months
+      button.btn.btn-default(type='button' ng-click="getChartData(6)" ng-class="{active: currSpan === 6}") 6 months
+      button.btn.btn-default(type='button' ng-click="getChartData(12)" ng-class="{active: currSpan === 12}") 12 months
+      button.btn.btn-default(type='button' ng-click="getChartData()") Test
   canvas(id="line" class="chart chart-line" chart-data="prices" chart-labels="labels" chart-legend="true" chart-series="series" chart-options="chartOptions" chart-click="onClick")
   ul.list-group.row
     li.list-group-item.clearfix.col-lg-3.col-md-4.col.sm-6(ng-repeat="stock in stocks") {{stock.symbol}}
