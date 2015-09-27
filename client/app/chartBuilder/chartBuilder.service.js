@@ -19,10 +19,15 @@ angular.module('stocktraderApp')
     // Public API here
     
     return {
-      chartDataHistorical: function (timePeriod) {
+      allChartDataHistorical: function (timePeriod) {
         var fromTime = xMonthsAgo(timePeriod);
         var toTime = new Date();
         return $http.get(url + "?fromDate=" + fromTime + "&toDate=" + toTime);
+      },
+      singleChartDataHistorical: function (timePeriod, stockSymbol) {
+        var fromTime = xMonthsAgo(timePeriod);
+        var toTime = new Date();
+        return $http.get(url + '/' + stockSymbol + "?fromDate=" + fromTime + "&toDate=" + toTime);
       },
       chartOptions: {
         animationSteps: 40,

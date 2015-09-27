@@ -45,12 +45,62 @@ function xMonthsAgo(months) {
 
 
 // get historical graph data for all symbols in db
-exports.graphAll = function (req, res) {
+exports.graphSingle = function (req, res, next) {
+
+  if (!req.params.symbol) {
+    next();
+  } else {
+    var symbol = req.params.symbol.toUpperCase();
+  }
 
   // optional parameters
   // allows range of dates to be selected for chart data
   // defaults to six months
-  console.log(req.query.fromDate, req.query.toDate)
+  if (req.query.fromDate && req.query.toDate) {
+    var fromDate = req.query.fromDate;
+    var toDate = req.query.toDate;
+  } else {
+    var fromDate = xMonthsAgo(6);
+    var toDate = new Date();
+  }
+  // end optional parameters
+
+
+  Stock.findOne({symbol: symbol}, function (err, stock) {
+    if(err) { return handleError(res, err); }
+    if (stock) {
+      var compiled = {
+        series: [stock.symbol],
+        labels: [],
+        prices: []
+      };
+      yahoo.historical({
+          symbol: stock.symbol,
+          from: fromDate,
+          to: toDate
+      }, function (err, quote) {
+        if(err) { 
+          return handleError(res, err);
+        } else {
+          var prices = retrievePrices(quote);
+          compiled.prices.push(prices);
+          compiled.labels = retrieveLabels(quote);
+        }
+        return res.status(200).json(compiled);
+      });
+    }
+  });
+};
+
+
+
+
+
+// get historical graph data for all symbols in db
+exports.graphAll = function (req, res) {
+  // optional parameters
+  // allows range of dates to be selected for chart data
+  // defaults to six months
   if (req.query.fromDate && req.query.toDate) {
     var fromDate = req.query.fromDate;
     var toDate = req.query.toDate;
@@ -93,6 +143,7 @@ exports.graphAll = function (req, res) {
     });
   });
 };
+
 
 
 function handleError(res, err) {

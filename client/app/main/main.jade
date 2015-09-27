@@ -1,14 +1,15 @@
 .container.col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1.col-sm-12
+  p {{currSpan}}
   .btn-group-wrapper
     .btn-group
-      button.btn.btn-default(type='button' ng-click="getChartData(1)" ng-class="{active: currSpan === 1}") 1 month
-      button.btn.btn-default(type='button' ng-click="getChartData(3)" ng-class="{active: currSpan === 3}") 3 months
-      button.btn.btn-default(type='button' ng-click="getChartData(6)" ng-class="{active: currSpan === 6}") 6 months
-      button.btn.btn-default(type='button' ng-click="getChartData(12)" ng-class="{active: currSpan === 12}") 12 months
-      button.btn.btn-default(type='button' ng-click="getChartData()") Test
+      button.btn.btn-default(type='button' ng-click="changeTimeSpan(1)" ng-class="{active: currSpan === 1}") 1 month
+      button.btn.btn-default(type='button' ng-click="changeTimeSpan(3)" ng-class="{active: currSpan === 3}") 3 months
+      button.btn.btn-default(type='button' ng-click="changeTimeSpan(6)" ng-class="{active: currSpan === 6}") 6 months
+      button.btn.btn-default(type='button' ng-click="changeTimeSpan(12)" ng-class="{active: currSpan === 12}") 12 months
+      button.btn.btn-default(type='button' ng-click="changeTimeSpan()") Test
   canvas(id="line" class="chart chart-line" chart-data="prices" chart-labels="labels" chart-legend="true" chart-series="series" chart-options="chartOptions" chart-click="onClick")
   ul.list-group.row
-    li.list-group-item.clearfix.col-lg-3.col-md-4.col.sm-6(ng-repeat="stock in stocks") {{stock.symbol}}
+    li.list-group-item.clearfix.col-lg-3.col-md-4.col.sm-6(ng-repeat="stock in stocks" ng-click="getChartData(stock.symbol)") {{stock.symbol}}
       button.btn.btn-danger.pull-right(ng-click="deleteStock(stock)") delete
 
   form.new-stock-form

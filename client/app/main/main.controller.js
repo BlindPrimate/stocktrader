@@ -5,23 +5,34 @@ angular.module('stocktraderApp')
 
     var init = function () {
         $scope.currSpan = 6;
+        $scope.currDisplaySymbol = '';
         $scope.stocks = {};
-        $scope.getChartData(6);
+        $scope.getChartData();
         $scope.chartOptions = chartBuilder.chartOptions;
     }
 
+    $scope.changeTimeSpan = function (newSpan) {
+      $scope.currSpan = newSpan;
+      $scope.getChartData($scope.currDisplaySymbol);
+    }
+
     // get chart data from x months ago
-    $scope.getChartData = function (timeInMonths) {
-      // refresh chart data if no timeInMonths variable provided
-      var time = timeInMonths || $scope.currSpan;
-      chartBuilder.chartDataHistorical(time).then(function (chartData) {
-        if (time) {
-          $scope.currSpan = time;
-        }
-        $scope.labels = chartData.data.labels;
-        $scope.series = chartData.data.series;
-        $scope.prices = chartData.data.prices;
-      });
+    $scope.getChartData = function (symbol) {
+      if (!symbol) {
+        chartBuilder.allChartDataHistorical($scope.currSpan).then(function (chartData) {
+          $scope.currDisplaySymbol = '';
+          $scope.labels = chartData.data.labels;
+          $scope.series = chartData.data.series;
+          $scope.prices = chartData.data.prices;
+        });
+      } else {
+        chartBuilder.singleChartDataHistorical($scope.currSpan, symbol).then(function (chartData) {
+          $scope.currDisplaySymbol = symbol;
+          $scope.labels = chartData.data.labels;
+          $scope.series = chartData.data.series;
+          $scope.prices = chartData.data.prices;
+        });
+      }
     }
 
 
