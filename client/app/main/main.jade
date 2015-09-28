@@ -1,19 +1,25 @@
 .container.col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1.col-sm-12
-  p {{currSpan}}
   .btn-group-wrapper
     .btn-group
       button.btn.btn-default(type='button' ng-click="changeTimeSpan(1)" ng-class="{active: currSpan === 1}") 1 month
       button.btn.btn-default(type='button' ng-click="changeTimeSpan(3)" ng-class="{active: currSpan === 3}") 3 months
       button.btn.btn-default(type='button' ng-click="changeTimeSpan(6)" ng-class="{active: currSpan === 6}") 6 months
       button.btn.btn-default(type='button' ng-click="changeTimeSpan(12)" ng-class="{active: currSpan === 12}") 12 months
-      button.btn.btn-default(type='button' ng-click="changeTimeSpan()") Test
   canvas(id="line" class="chart chart-line" chart-data="prices" chart-labels="labels" chart-legend="true" chart-series="series" chart-options="chartOptions" chart-click="onClick")
+  a(href="#" ng-click="getChartData()")
+    span.badge All Stocks
   ul.list-group.row
     li.list-group-item.clearfix.col-lg-3.col-md-4.col.sm-6(ng-repeat="stock in stocks" ng-click="getChartData(stock.symbol)") {{stock.symbol}}
-      button.btn.btn-danger.pull-right(ng-click="deleteStock(stock)") delete
+      button.btn.btn-danger.pull-right(ng-click="deleteStock(stock)") 
+        i.fa.fa-times
 
   form.new-stock-form
     p.input-group
-      input.form-control(type='text', placeholder='Add a new stock here.', ng-model='newStock')
+      input.form-control(type='text', placeholder='Add a new stock here.', ng-model='newStock' ng-model-options="{debounce: 600}")
       span.input-group-btn
         button.btn.btn-primary(type='submit', ng-click='addStock()') Add New
+      ul.list-group
+        li.list-group-item(ng-repeat="result in searchResults" ng-click="selectSearchTerm(result)")
+          p {{result.Name}}
+          p symbol: {{result.Symbol}}
+  //-p {{searchResults}}

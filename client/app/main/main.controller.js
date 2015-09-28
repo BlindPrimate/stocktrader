@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stocktraderApp')
-  .controller('MainCtrl', function ($scope, $http, socket, chartBuilder) {
+  .controller('MainCtrl', function ($scope, $http, socket, chartBuilder, symbolSearch) {
 
     var init = function () {
         $scope.currSpan = 6;
@@ -9,7 +9,20 @@ angular.module('stocktraderApp')
         $scope.stocks = {};
         $scope.getChartData();
         $scope.chartOptions = chartBuilder.chartOptions;
+        $scope.searchResults = [];
     }
+
+    var isSymbolMatch = function (symbol) {
+      $scope.stocks.forEach(function (stock) {
+        if (stock.symbol === symbol) {
+          return true;
+        }
+      });
+      return false;
+    }
+
+
+
 
     $scope.changeTimeSpan = function (newSpan) {
       $scope.currSpan = newSpan;
@@ -35,6 +48,21 @@ angular.module('stocktraderApp')
       }
     }
 
+    $scope.$watch('newStock', function () {
+      symbolSearch.search($scope.newStock).then(function (results) {
+        if (results.data.length > 0) {
+          $scope.searchResults = results.data;
+        } else {
+          $scope.searchResults = '';
+        }
+      });
+    });
+
+    $scope.selectSearchTerm = function (searchTermObj) {
+      $scope.newStock = searchTermObj.Symbol;
+      $scope.addStock();
+    }
+
 
     $http.get('/api/stocks').success(function(stocks) {
       $scope.stocks = stocks;
@@ -44,7 +72,7 @@ angular.module('stocktraderApp')
     });
 
     $scope.addStock = function() {
-      if($scope.newStock === '') {
+      if($scope.newStock === '' || !isSymbolMatch($scope.newStock)) {
         return;
       }
       $scope.newStock = $scope.newStock.toUpperCase();

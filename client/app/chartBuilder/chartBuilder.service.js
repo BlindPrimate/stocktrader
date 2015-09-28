@@ -15,7 +15,6 @@ angular.module('stocktraderApp')
     }
 
 
-
     // Public API here
     
     return {
