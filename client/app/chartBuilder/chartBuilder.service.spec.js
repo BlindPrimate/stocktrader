@@ -11,8 +11,8 @@ describe('Service: chartBuilder', function () {
     chartBuilder = _chartBuilder_;
   }));
 
-  it('should do something', function () {
-    expect(!!chartBuilder).toBe(true);
-  });
+  //it('should throw an error if no results', function () {
+    //expect(chartBuilder.singleChartDataHistorical(6, 'knock')).toThrow();
+  //});
 
 });

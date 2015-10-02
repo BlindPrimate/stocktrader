@@ -14,6 +14,33 @@ exports.index = function(req, res) {
 };
 
 
+// get current stock price of all stocks
+exports.snapshotAll = function (req, res) {
+  Stock.find(function (err, stocks) {
+    if(err) { return handleError(res, err); }
+    var symbols = stocks.map(function (stock) {
+      return stock.symbol;
+    });
+    yahoo.snapshot({
+      symbols: symbols,
+      fields: ['s', 'n', 'd1', 'l1', 'y', 'r']
+    }, function (err, quotes) {
+      if (err) {
+        throw (err);
+      } else {
+        var results = _.map(stocks, function (stock) {
+          var targetStock = _.find(quotes, {symbol: stock.symbol});
+          stock.currPrice = targetStock.lastTradePriceOnly;
+          return stock;
+        });
+        return res.status(200).json(results);
+      }
+    });
+  });
+};
+
+
+
 // Get a single stock
 exports.show = function(req, res, next) {
   if (req.id = '') {

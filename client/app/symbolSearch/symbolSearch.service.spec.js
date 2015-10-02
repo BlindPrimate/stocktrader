@@ -12,7 +12,7 @@ describe('Service: symbolSearch', function () {
   }));
 
   it('should do something', function () {
-    expect(!!symbolSearch).toBe(true);
+
   });
 
 });

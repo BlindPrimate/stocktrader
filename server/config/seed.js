@@ -35,9 +35,15 @@ Thing.find({}).remove(function() {
 Stock.find({}).remove(function() {
   Stock.create({
     symbol: 'AAPL',
+    name: 'Apple Inc.',
+    exchange: 'NASDAQ'
   },{
-    symbol: 'MSFT'
+    symbol: 'MSFT',
+    name: 'Microsoft Corp',
+    exchange: 'NASDAQ'
   }, {
-    symbol: 'GOOGL'
+    symbol: 'GOOGL',
+    name: 'Google Inc.',
+    exchange: 'NASDAQ'
   });
 });

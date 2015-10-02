@@ -1,25 +1,32 @@
-.container.col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1.col-sm-12
-  .btn-group-wrapper
-    .btn-group
-      button.btn.btn-default(type='button' ng-click="changeTimeSpan(1)" ng-class="{active: currSpan === 1}") 1 month
-      button.btn.btn-default(type='button' ng-click="changeTimeSpan(3)" ng-class="{active: currSpan === 3}") 3 months
-      button.btn.btn-default(type='button' ng-click="changeTimeSpan(6)" ng-class="{active: currSpan === 6}") 6 months
-      button.btn.btn-default(type='button' ng-click="changeTimeSpan(12)" ng-class="{active: currSpan === 12}") 12 months
-  canvas(id="line" class="chart chart-line" chart-data="prices" chart-labels="labels" chart-legend="true" chart-series="series" chart-options="chartOptions" chart-click="onClick")
-  a(href="#" ng-click="getChartData()")
-    span.badge All Stocks
-  ul.list-group.row
-    li.list-group-item.clearfix.col-lg-3.col-md-4.col.sm-6(ng-repeat="stock in stocks" ng-click="getChartData(stock.symbol)") {{stock.symbol}}
-      button.btn.btn-danger.pull-right(ng-click="deleteStock(stock)") 
-        i.fa.fa-times
 
-  form.new-stock-form
-    p.input-group
-      input.form-control(type='text', placeholder='Add a new stock here.', ng-model='newStock' ng-model-options="{debounce: 600}")
-      span.input-group-btn
-        button.btn.btn-primary(type='submit', ng-click='addStock()') Add New
-      ul.list-group
-        li.list-group-item(ng-repeat="result in searchResults" ng-click="selectSearchTerm(result)")
-          p {{result.Name}}
-          p symbol: {{result.Symbol}}
-  //-p {{searchResults}}
+.container.col-lg-12.col-md-12.col-sm-12
+  .container.col-lg-2.col-md-2.col-sm-2
+    aside#stock-display
+      form.new-stock-form
+        p.input-group
+          input.form-control(type='text', placeholder='Search', ng-model='newStock' ng-model-options="{debounce: 600}")
+          ul.list-group
+            li.list-group-item(ng-repeat="result in searchResults" ng-click="addStock(result)")
+              p symbol: {{result.Symbol}}
+              p {{result.Name}}
+      ul#current-stocks.list-group
+        li.list-group-item(ng-click="getChartData()" ng-class="{active: currDisplaySymbol === ''}") All
+        li.list-group-item.clearfix.col-lg-12.col-md-12.col.sm-12(ng-repeat="stock in stocks" ng-click="getChartData(stock.symbol)" ng-class="{active: currDisplaySymbol === stock.symbol}")
+          p.stock-symbol {{stock.symbol}}
+          p.stock-name {{stock.name}}
+          p.stock-exchange {{stock.exchange}}
+          p.stock-price {{stock.currPrice}}
+          button.btn.btn-defaultt.delete-stock(ng-click="deleteStock(stock)") delete
+
+
+
+  .container.col-lg-10.col-md-10.col-sm-12
+    .btn-group-wrapper
+      .btn-group
+        button.btn.btn-default(type='button' ng-click="changeTimeSpan(1)" ng-class="{active: currSpan === 1}") 1 month
+        button.btn.btn-default(type='button' ng-click="changeTimeSpan(3)" ng-class="{active: currSpan === 3}") 3 months
+        button.btn.btn-default(type='button' ng-click="changeTimeSpan(6)" ng-class="{active: currSpan === 6}") 6 months
+        button.btn.btn-default(type='button' ng-click="changeTimeSpan(12)" ng-class="{active: currSpan === 12}") 12 months
+    canvas#stock-chart.chart.chart-line(chart-data="prices" chart-labels="labels" chart-legend="true" chart-series="series" chart-options="chartOptions" chart-click="onClick")
+
+    //-p {{searchResults}}

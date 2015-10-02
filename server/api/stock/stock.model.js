@@ -5,6 +5,9 @@ var mongoose = require('mongoose'),
 
 var StockSchema = new Schema({
   symbol: String,
+  name: String,
+  exchange: String,
+  currPrice: Number
 });
 
 module.exports = mongoose.model('Stock', StockSchema);

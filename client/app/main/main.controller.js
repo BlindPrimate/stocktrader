@@ -13,16 +13,13 @@ angular.module('stocktraderApp')
     }
 
     var isSymbolMatch = function (symbol) {
-      $scope.stocks.forEach(function (stock) {
-        if (stock.symbol === symbol) {
+      for (var i = 0; i < $scope.stocks.length; i++) {
+        if ($scope.stocks[i].symbol === symbol) {
           return true;
         }
-      });
-      return false;
+      }
+      return false
     }
-
-
-
 
     $scope.changeTimeSpan = function (newSpan) {
       $scope.currSpan = newSpan;
@@ -58,25 +55,24 @@ angular.module('stocktraderApp')
       });
     });
 
-    $scope.selectSearchTerm = function (searchTermObj) {
-      $scope.newStock = searchTermObj.Symbol;
-      $scope.addStock();
-    }
 
-
-    $http.get('/api/stocks').success(function(stocks) {
+    $http.get('/api/stocks/all/current').success(function(stocks) {
       $scope.stocks = stocks;
       socket.syncUpdates('stock', $scope.stocks, function () {
         $scope.getChartData();
       });
     });
 
-    $scope.addStock = function() {
-      if($scope.newStock === '' || !isSymbolMatch($scope.newStock)) {
+    $scope.addStock = function(stockObj) {
+      if(isSymbolMatch(stockObj.Symbol)) {
         return;
       }
       $scope.newStock = $scope.newStock.toUpperCase();
-      $http.post('/api/stocks', { symbol: $scope.newStock });
+      $http.post('/api/stocks', 
+          { symbol: stockObj.Symbol,
+            name: stockObj.Name,
+            exchange: stockObj.Exchange
+          });
       $scope.newStock = '';
     };
 
