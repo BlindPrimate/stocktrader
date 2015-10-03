@@ -1,16 +1,21 @@
+#stock-display {
+  position: relative;
+}
+
+
 #current-stocks {
   li {
-
+    cursor: pointer;
   }
   .stock-symbol {
     font-size: 1.5em;
-    margin: 0;
+    margin-bottom: 3px;
   }
 
   .stock-name {
     font-size: 1em;
     font-weight: 300;
-    margin: 0;
+    margin-bottom: 3px;
   }
 
   .stock-exchange {
@@ -19,7 +24,8 @@
   }
 
   .stock-price {
-    font-size: 1.8em;
+    font-size: 1.5em;
+    font-weight: 300;
     position: absolute;
     top: 10px;
     right: 10px;
@@ -30,6 +36,29 @@
     position: absolute;
     bottom: 10px;
     right: 10px;
+  }
+}
+
+
+#stock-search {
+  position: relative;
+  i {
+    position: absolute;
+    z-index: 3;
+    top: 20px;
+    left: 10px;
+  }
+  input {
+    margin: 10px 0;
+    padding-left: 35px;
+  }
+  #search-results {
+    position: absolute;
+    z-index: 1;
+    margin-top: 10px;
+    padding: 10px;
+    background: white;
+    border: 1px solid black;
   }
 }
 

@@ -8,10 +8,12 @@ angular.module('stocktraderApp')
         $scope.currDisplaySymbol = '';
         $scope.stocks = {};
         $scope.getChartData();
+        $scope.getAllStocks();
         $scope.chartOptions = chartBuilder.chartOptions;
         $scope.searchResults = [];
     }
 
+    // check if symbol already present in list of stocks
     var isSymbolMatch = function (symbol) {
       for (var i = 0; i < $scope.stocks.length; i++) {
         if ($scope.stocks[i].symbol === symbol) {
@@ -21,6 +23,8 @@ angular.module('stocktraderApp')
       return false
     }
 
+
+    // change displayed span of time of chart
     $scope.changeTimeSpan = function (newSpan) {
       $scope.currSpan = newSpan;
       $scope.getChartData($scope.currDisplaySymbol);
@@ -45,6 +49,8 @@ angular.module('stocktraderApp')
       }
     }
 
+
+    // enables live symbol search
     $scope.$watch('newStock', function () {
       symbolSearch.search($scope.newStock).then(function (results) {
         if (results.data.length > 0) {
@@ -55,13 +61,15 @@ angular.module('stocktraderApp')
       });
     });
 
-
-    $http.get('/api/stocks/all/current').success(function(stocks) {
-      $scope.stocks = stocks;
-      socket.syncUpdates('stock', $scope.stocks, function () {
-        $scope.getChartData();
+    $scope.getAllStocks = function () {
+      $http.get('/api/stocks/all/current').success(function(stocks) {
+        $scope.stocks = stocks;
+        socket.syncUpdates('stock', $scope.stocks, function () {
+          $scope.getChartData();
+          $scope.getAllStocks();
+        });
       });
-    });
+    }
 
     $scope.addStock = function(stockObj) {
       if(isSymbolMatch(stockObj.Symbol)) {

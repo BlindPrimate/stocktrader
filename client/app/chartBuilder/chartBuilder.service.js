@@ -34,6 +34,7 @@ angular.module('stocktraderApp')
         pointDotRadius: 3,
         pointHitDetectionRadius: 1,
         datasetFill: false,
-      }
+      },
+      knock: 'bang'
     }
   });

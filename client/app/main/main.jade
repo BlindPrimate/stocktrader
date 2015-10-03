@@ -2,15 +2,17 @@
 .container.col-lg-12.col-md-12.col-sm-12
   .container.col-lg-2.col-md-2.col-sm-2
     aside#stock-display
-      form.new-stock-form
-        p.input-group
+      form#stock-search
+        div.input-group.col-lg-12.col-md-12.col-sm-12
+          i.fa.fa-search
           input.form-control(type='text', placeholder='Search', ng-model='newStock' ng-model-options="{debounce: 600}")
-          ul.list-group
-            li.list-group-item(ng-repeat="result in searchResults" ng-click="addStock(result)")
-              p symbol: {{result.Symbol}}
-              p {{result.Name}}
+          div#search-results.clearfix(ng-show="searchResults")
+            ul.list-group
+              li.list-group-item(ng-repeat="result in searchResults" ng-click="addStock(result)")
+                p symbol: {{result.Symbol}}
+                p {{result.Name}}
       ul#current-stocks.list-group
-        li.list-group-item(ng-click="getChartData()" ng-class="{active: currDisplaySymbol === ''}") All
+        li.list-group-item(ng-click="getChartData()") All
         li.list-group-item.clearfix.col-lg-12.col-md-12.col.sm-12(ng-repeat="stock in stocks" ng-click="getChartData(stock.symbol)" ng-class="{active: currDisplaySymbol === stock.symbol}")
           p.stock-symbol {{stock.symbol}}
           p.stock-name {{stock.name}}
