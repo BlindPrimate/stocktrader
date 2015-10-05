@@ -14,7 +14,7 @@ exports.index = function(req, res) {
 };
 
 
-// get current stock price of all stocks
+// get current stock list of all stocks w/ prices
 exports.snapshotAll = function (req, res) {
   Stock.find(function (err, stocks) {
     if(err) { return handleError(res, err); }
@@ -30,7 +30,7 @@ exports.snapshotAll = function (req, res) {
       } else {
         var results = _.map(stocks, function (stock) {
           var targetStock = _.find(quotes, {symbol: stock.symbol});
-          stock.currPrice = targetStock.lastTradePriceOnly;
+          stock.currPrice = targetStock.lastTradePriceOnly.toFixed(2);
           return stock;
         });
         return res.status(200).json(results);

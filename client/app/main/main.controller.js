@@ -12,7 +12,7 @@ angular.module('stocktraderApp')
         $scope.chartOptions = chartBuilder.chartOptions;
         $scope.search = {
           term: '',
-          results: [],
+          results: '',
           focused: false
         }
     }
@@ -58,7 +58,7 @@ angular.module('stocktraderApp')
         if (results.data.length > 0) {
           $scope.search.results = results.data;
         } else {
-          $scope.search.results = [];
+          $scope.search.results = '';
         }
       });
     }

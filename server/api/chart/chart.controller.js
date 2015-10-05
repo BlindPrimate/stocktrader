@@ -31,6 +31,7 @@ function retrieveLabels(quoteData) {
 function retrievePrices(quoteData) {
   var prices = [];
   quoteData.forEach(function (quote) {
+    quote.close = quote.close.toFixed(2);
     prices.push(quote.close);
   });
   return prices;

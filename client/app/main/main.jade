@@ -6,9 +6,9 @@
         div#search-box-wrapper
           i#search-icon.fa.fa-search
           i#clear-search-icon.fa.fa-times(ng-click="search.term=''" ng-show="search.term")
-          input.form-control(type='text', placeholder='Search for Symbol or Name', ng-model='search.term' ng-model-options="{debounce: 600}" ng-focus="getSearchResults() ; search.focused = true" ng-blur="search.results = '' ; search.focused = false")
+          input.form-control(type='text', placeholder='Search for Symbol or Name', ng-model='search.term' ng-model-options="{debounce: 350}" ng-focus="getSearchResults() ; search.focused = true" ng-blur="search.results = '' ; search.focused = false")
           ul.list-group#search-results.clearfix(ng-show="search.focused && search.term")
-            li#no-results.list-group-item(ng-show="search.results.length < 1 && search.term") No Results Found
+            li#no-results.list-group-item(ng-show="!search.results && search.term") No Results Found
             li.list-group-item(ng-repeat="result in search.results" ng-mousedown="addStock(result)")
               p.search-symbol {{result.Symbol}}
               p.search-name {{result.Name}}
