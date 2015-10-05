@@ -1,67 +1,165 @@
-#stock-display {
-  position: relative;
+
+@mixin unevenBorders($leftBorder, $remainingBorders) {
+  border-right: $leftBorder;
+  border-left: $remainingBorders;
+  border-top: $remainingBorders;
+  border-bottom: $remainingBorders;
 }
 
 
+
+#stock-display {
+  padding: 30px 0;
+  border-right: 4px solid #EEE;
+  min-height: 100%;
+  label {
+    display: block;
+    font-weight: 400;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+#get-all {
+  cursor: pointer;
+  margin: 25px auto;
+  text-align: center;
+  display: block;
+  &.active {
+    color: $blue;
+  }
+}
+
 #current-stocks {
+  list-style-type: none;
   li {
+
+  }
+  .stock-card {
+    @include unevenBorders(solid 4px #DDD, solid 1px #EEE);
     cursor: pointer;
+    padding: 10px 20px;
+    background: $off-white;
+    margin-left: 4px;
   }
-  .stock-symbol {
-    font-size: 1.5em;
-    margin-bottom: 3px;
+  .stock-card.active {
+    @include unevenBorders(solid 4px $blue, solid 1px tint($blue, 50%));
+    background: #FFF;
+    margin-right: -10px;
+    color: darken($blue, 25%);
   }
 
-  .stock-name {
-    font-size: 1em;
-    font-weight: 300;
-    margin-bottom: 3px;
-  }
+  .stock-data {
+    display: inline-block;
+    .stock-symbol {
+      font-size: 1.6em;
+      margin-bottom: 3px;
+    }
 
-  .stock-exchange {
-    font-size: 0.7em;
-    font-weight: 300;
+    .stock-name {
+      font-size: 1.2em;
+      font-weight: 300;
+      margin-bottom: 7px;
+    }
+
+    .stock-exchange {
+      font-size: 0.7em;
+      font-weight: 300;
+      color: tint($primary-font, 60%);
+      margin: 0;
+    }
   }
 
   .stock-price {
-    font-size: 1.5em;
+    font-size: 1.6em;
     font-weight: 300;
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    float: right;
   }
 
   .delete-stock {
-    color: red;
+    color: #CCC;
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    top: 3px;
+    right: 3px;
+    border: none;
+    padding: 0 4px;
+    display: none;
   }
 }
 
 
 #stock-search {
-  position: relative;
+  #search-box-wrapper {
+    margin-right: 10px;
+    position: relative;
+  }
   i {
     position: absolute;
     z-index: 3;
+  }
+  #search-icon {
     top: 20px;
     left: 10px;
   }
+  #clear-search-icon {
+    cursor: pointer;
+    padding: 0 4px;
+    top: 19px;
+    right: 6px;
+    font-size: 1.2em;
+    color: #ccc;
+  }
   input {
+    @include border-radius(3px);
     margin: 10px 0;
-    padding-left: 35px;
+    padding-left: 30px;
   }
   #search-results {
     position: absolute;
+    left: 0;
+    right: 0;
     z-index: 1;
-    margin-top: 10px;
-    padding: 10px;
+    width: 90%;
+    margin: 60px auto 0;
     background: white;
-    border: 1px solid black;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 4px #DDD;
+    &:before {
+      content: '';
+      width: 0;
+      height: 0;
+      display: block;
+      z-index: 10;
+      top: -10px;
+      right: 0;
+      left: 0;
+      margin: 0 auto;
+      border-right: 10px solid transparent;
+      border-left: 10px solid transparent;
+      border-bottom: 10px solid #ccc;
+      position: absolute;
+    }
+    li {
+      cursor: pointer; 
+    }
+    .search-symbol {
+      font-size: 1.1em;
+      margin: 0;
+    }
+    .search-name {
+      font-size: 0.9em;
+      font-weight: 300;
+      margin: 0;
+    }
+    #no-results {
+      text-align: center;
+    }
   }
 }
 
 
+/*#chart {*/
+  /*border-left: 3px solid #EEE;*/
+/*}*/
 
 

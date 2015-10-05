@@ -1,28 +1,31 @@
-
 .container.col-lg-12.col-md-12.col-sm-12
-  .container.col-lg-2.col-md-2.col-sm-2
-    aside#stock-display
-      form#stock-search
-        div.input-group.col-lg-12.col-md-12.col-sm-12
-          i.fa.fa-search
-          input.form-control(type='text', placeholder='Search', ng-model='newStock' ng-model-options="{debounce: 600}")
-          div#search-results.clearfix(ng-show="searchResults")
-            ul.list-group
-              li.list-group-item(ng-repeat="result in searchResults" ng-click="addStock(result)")
-                p symbol: {{result.Symbol}}
-                p {{result.Name}}
-      ul#current-stocks.list-group
-        li.list-group-item(ng-click="getChartData()") All
-        li.list-group-item.clearfix.col-lg-12.col-md-12.col.sm-12(ng-repeat="stock in stocks" ng-click="getChartData(stock.symbol)" ng-class="{active: currDisplaySymbol === stock.symbol}")
+  aside#stock-display.container.col-lg-2.col-md-2.col-sm-2
+    form#stock-search
+      div.input-group.col-lg-12.col-md-12.col-sm-12
+        label Add New Stock
+        div#search-box-wrapper
+          i#search-icon.fa.fa-search
+          i#clear-search-icon.fa.fa-times(ng-click="search.term=''" ng-show="search.term")
+          input.form-control(type='text', placeholder='Search for Symbol or Name', ng-model='search.term' ng-model-options="{debounce: 600}" ng-focus="getSearchResults() ; search.focused = true" ng-blur="search.results = '' ; search.focused = false")
+          ul.list-group#search-results.clearfix(ng-show="search.focused && search.term")
+            li#no-results.list-group-item(ng-show="search.results.length < 1 && search.term") No Results Found
+            li.list-group-item(ng-repeat="result in search.results" ng-mousedown="addStock(result)")
+              p.search-symbol {{result.Symbol}}
+              p.search-name {{result.Name}}
+    ul#current-stocks.list-group
+      li#get-all(ng-click="getChartData()" ng-class="{active: currDisplaySymbol === ''}") Graph All
+      li.stock-card.clearfix.col-lg-12.col-md-12.col.sm-12(ng-repeat="stock in stocks" ng-click="getChartData(stock.symbol)" ng-class="{active: currDisplaySymbol === stock.symbol}")
+        button.btn.btn-default.delete-stock(ng-click="deleteStock(stock)" ng-show-on-parent-hover='true')
+          i.fa.fa-times
+        div.stock-data
           p.stock-symbol {{stock.symbol}}
           p.stock-name {{stock.name}}
           p.stock-exchange {{stock.exchange}}
-          p.stock-price {{stock.currPrice}}
-          button.btn.btn-defaultt.delete-stock(ng-click="deleteStock(stock)") delete
+        p.stock-price {{stock.currPrice}}
 
 
 
-  .container.col-lg-10.col-md-10.col-sm-12
+  #chart.container.col-lg-10.col-md-10.col-sm-12
     .btn-group-wrapper
       .btn-group
         button.btn.btn-default(type='button' ng-click="changeTimeSpan(1)" ng-class="{active: currSpan === 1}") 1 month
@@ -30,5 +33,3 @@
         button.btn.btn-default(type='button' ng-click="changeTimeSpan(6)" ng-class="{active: currSpan === 6}") 6 months
         button.btn.btn-default(type='button' ng-click="changeTimeSpan(12)" ng-class="{active: currSpan === 12}") 12 months
     canvas#stock-chart.chart.chart-line(chart-data="prices" chart-labels="labels" chart-legend="true" chart-series="series" chart-options="chartOptions" chart-click="onClick")
-
-    //-p {{searchResults}}

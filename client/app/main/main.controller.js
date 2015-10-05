@@ -10,7 +10,11 @@ angular.module('stocktraderApp')
         $scope.getChartData();
         $scope.getAllStocks();
         $scope.chartOptions = chartBuilder.chartOptions;
-        $scope.searchResults = [];
+        $scope.search = {
+          term: '',
+          results: [],
+          focused: false
+        }
     }
 
     // check if symbol already present in list of stocks
@@ -49,18 +53,23 @@ angular.module('stocktraderApp')
       }
     }
 
-
-    // enables live symbol search
-    $scope.$watch('newStock', function () {
-      symbolSearch.search($scope.newStock).then(function (results) {
+    $scope.getSearchResults = function () {
+      symbolSearch.search($scope.search.term).then(function (results) {
         if (results.data.length > 0) {
-          $scope.searchResults = results.data;
+          $scope.search.results = results.data;
         } else {
-          $scope.searchResults = '';
+          $scope.search.results = [];
         }
       });
+    }
+
+
+    // enables live symbol search
+    $scope.$watch('search.term', function () {
+      $scope.getSearchResults();
     });
 
+    // retrieve all stock names w/ current prices
     $scope.getAllStocks = function () {
       $http.get('/api/stocks/all/current').success(function(stocks) {
         $scope.stocks = stocks;
@@ -75,13 +84,13 @@ angular.module('stocktraderApp')
       if(isSymbolMatch(stockObj.Symbol)) {
         return;
       }
-      $scope.newStock = $scope.newStock.toUpperCase();
+      $scope.search.term = $scope.search.term.toUpperCase();
       $http.post('/api/stocks', 
           { symbol: stockObj.Symbol,
             name: stockObj.Name,
             exchange: stockObj.Exchange
           });
-      $scope.newStock = '';
+      $scope.search.term = '';
     };
 
     $scope.deleteStock = function(stock) {
