@@ -20,11 +20,31 @@
   }
 }
 
+
 #get-all {
-  cursor: pointer;
-  margin: 25px auto;
-  text-align: center;
-  display: block;
+
+}
+
+#multi-select-toggle {
+  font-size: 1.4em;
+  color: tint($primary-font, 60%);
+}
+
+#options {
+  padding: 7px 10px;
+  button {
+    text-align: center;
+    display: block;
+    outline: none;
+    border: none;
+    background: transparent;
+  }
+  &.active {
+    color: $blue;
+  }
+}
+
+#multi-select-toggle {
   &.active {
     color: $blue;
   }
@@ -90,7 +110,7 @@
 
 #stock-search {
   #search-box-wrapper {
-    margin-right: 10px;
+    margin: 0 10px;
     position: relative;
   }
   i {
@@ -108,6 +128,11 @@
     right: 6px;
     font-size: 1.2em;
     color: #ccc;
+  }
+  #searching {
+    top: 20px;
+    right: 30px;
+    color: #AAA;
   }
   input {
     @include border-radius(3px);

@@ -5,8 +5,7 @@ var controller = require('./chart.controller');
 
 var router = express.Router();
 
-router.get('/:symbol', controller.graphSingle);
-router.get('/', controller.graphAll);
+router.get('/', controller.graphSet);
 
 
 module.exports = router;
