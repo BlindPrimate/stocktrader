@@ -23,7 +23,7 @@ exports.snapshotAll = function (req, res) {
     });
     yahoo.snapshot({
       symbols: symbols,
-      fields: ['s', 'n', 'd1', 'l1', 'y', 'r']
+      fields: ['s', 'd1', 'l1']
     }, function (err, quotes) {
       if (err) {
         throw (err);
@@ -57,6 +57,18 @@ exports.show = function(req, res, next) {
 exports.create = function(req, res) {
   Stock.create(req.body, function(err, stock) {
     if(err) { return handleError(res, err); }
+    yahoo.snapshot({
+      symbol: req.body.symbol,
+      fields: ['s','d1', 'l1']
+    }, function (err, quote) {
+      console.log(quote);
+      if (err) {
+        throw (err);
+      } else {
+        stock.currPrice = quote.lastTradePriceOnly.toFixed(2);
+      }
+      stock.save();
+    });
     return res.status(201).json(stock);
   });
 };

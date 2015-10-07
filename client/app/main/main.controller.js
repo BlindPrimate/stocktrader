@@ -99,9 +99,7 @@ angular.module('stocktraderApp')
     $scope.getAllStocks = function () {
       $http.get('/api/stocks/all/current').success(function(stocks) {
         $scope.stocks = stocks;
-        socket.syncUpdates('stock', $scope.stocks, function(action, entry) {
-          console.log(entry); 
-        });
+        socket.syncUpdates('stock', $scope.stocks);
       });
     }
 

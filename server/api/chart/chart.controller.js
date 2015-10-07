@@ -24,7 +24,6 @@ function xMonthsAgo(months) {
 }
 
 
-
 // get historical graph data for all symbols in db
 exports.graphSet = function (req, res) {
   // optional parameters
