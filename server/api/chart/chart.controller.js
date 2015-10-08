@@ -51,8 +51,10 @@ exports.graphSet = function (req, res) {
 
     if (req.query.symbols) {
       symbols = req.query.symbols.split(',');
-    } else {
+    } else if (stocks.length > 0) {
       symbols = _.map(stocks, 'symbol');
+    } else {
+      return res.status(200).json(stocks);
     }
 
     yahoo.historical({

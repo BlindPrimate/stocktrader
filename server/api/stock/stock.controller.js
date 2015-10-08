@@ -16,9 +16,17 @@ exports.index = function(req, res) {
 exports.snapshotAll = function (req, res) {
   Stock.find(function (err, stocks) {
     if(err) { return handleError(res, err); }
-    var symbols = stocks.map(function (stock) {
-      return stock.symbol;
-    });
+
+    var symbols;
+
+    if (!stocks.length) {
+      return res.status(200).json(stocks);
+    } else {
+      symbols = stocks.map(function (stock) {
+        return stock.symbol;
+      });
+    }
+
     yahoo.snapshot({
       symbols: symbols,
       fields: ['s', 'd1', 'l1']

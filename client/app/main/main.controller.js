@@ -127,15 +127,16 @@ angular.module('stocktraderApp')
             exchange: stockObj.Exchange
           });
       $scope.search.term = '';
+      $scope.viewingStocks = [stockObj.Symbol];
     };
 
     $scope.deleteStock = function(stock) {
       $http.delete('/api/stocks/' + stock._id)
         .then(function (deletedStock) {
-          $scope.viewingStocks = _.remove($scope.viewingStocks, function (symbol) {
-            return symbol !== deletedStock.data.symbol;
-          });
-        });
+          // delete stock sylmbol from graphed stocks
+          var index = $scope.viewingStocks.indexOf(stock.symbol);
+          $scope.viewingStocks.splice(index, 1);
+        });; 
     };
 
     $scope.$on('$destroy', function () {

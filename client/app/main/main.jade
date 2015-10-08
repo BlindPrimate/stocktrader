@@ -18,7 +18,7 @@ aside#stock-display.container.col-lg-2.col-md-3.col-sm-12.col-xs-12
     button#get-all(ng-click="selectAllStocks()") Select All
   ul#current-stocks.list-group
     li.stock-card.clearfix.col-lg-12.col-md-12.col.sm-12(ng-repeat="stock in stocks" ng-click="selectStock(stock.symbol)" ng-class="{active: isCurrentlyGraphed(stock.symbol)}")
-      button.btn.btn-default.delete-stock(ng-click="deleteStock(stock)" ng-show-on-parent-hover='true')
+      button.btn.btn-default.delete-stock(ng-click="deleteStock(stock); $event.stopPropagation()" ng-show-on-parent-hover='true')
         i.fa.fa-times
       div.stock-data
         p.stock-symbol {{stock.symbol}}
@@ -33,4 +33,5 @@ aside#stock-display.container.col-lg-2.col-md-3.col-sm-12.col-xs-12
       button.btn.btn-default(type='button' ng-click="changeTimeSpan(3)" ng-class="{active: currSpan === 3}") 3 months
       button.btn.btn-default(type='button' ng-click="changeTimeSpan(6)" ng-class="{active: currSpan === 6}") 6 months
       button.btn.btn-default(type='button' ng-click="changeTimeSpan(12)" ng-class="{active: currSpan === 12}") 12 months
-  canvas#stock-chart.chart.chart-line(chart-data="prices" chart-labels="labels" chart-legend="true" chart-series="series" chart-options="chartOptions" chart-click="onClick")
+  canvas#stock-chart.chart.chart-line(ng-show="stocks.length" chart-data="prices" chart-labels="labels" chart-legend="true" chart-series="series" chart-options="chartOptions" chart-click="onClick")
+  p#no-stocks(ng-show="!stocks.length") No stocks are currently being tracked
