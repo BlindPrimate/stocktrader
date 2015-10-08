@@ -1,6 +1,6 @@
-aside#stock-display.container.col-lg-2.col-md-2.col-sm-2
+aside#stock-display.container.col-lg-2.col-md-3.col-sm-12.col-xs-12
   form#stock-search
-    div.input-group.col-lg-12.col-md-12.col-sm-12
+    div.col-lg-12.col-md-12.col-sm-12
       label Add New Stock
       div#search-box-wrapper
         i#search-icon.fa.fa-search
@@ -26,9 +26,7 @@ aside#stock-display.container.col-lg-2.col-md-2.col-sm-2
         p.stock-exchange {{stock.exchange}}
       p.stock-price {{stock.currPrice}}
 
-
-
-#chart.container.col-lg-10.col-md-10.col-sm-12
+#chart.container.col-lg-10.col-md-9.col-sm-12.col-xs-12
   .btn-group-wrapper
     .btn-group
       button.btn.btn-default(type='button' ng-click="changeTimeSpan(1)" ng-class="{active: currSpan === 1}") 1 month

@@ -3,7 +3,6 @@
 var _ = require('lodash');
 var Stock = require('./stock.model');
 var yahoo = require('yahoo-finance');
-var async = require('async');
 
 // Get list of stocks
 exports.index = function(req, res) {
@@ -12,7 +11,6 @@ exports.index = function(req, res) {
     return res.status(200).json(stocks);
   });
 };
-
 
 // get current stock list of all stocks w/ prices
 exports.snapshotAll = function (req, res) {
@@ -39,8 +37,6 @@ exports.snapshotAll = function (req, res) {
   });
 };
 
-
-
 // Get a single stock
 exports.show = function(req, res, next) {
   if (req.id = '') {
@@ -53,15 +49,15 @@ exports.show = function(req, res, next) {
   });
 };
 
-// Creates a new stock in the DB.
+// Creates a new stock in the DB
 exports.create = function(req, res) {
   Stock.create(req.body, function(err, stock) {
     if(err) { return handleError(res, err); }
+    // retrieve current stock price
     yahoo.snapshot({
       symbol: req.body.symbol,
       fields: ['s','d1', 'l1']
     }, function (err, quote) {
-      console.log(quote);
       if (err) {
         throw (err);
       } else {

@@ -2,6 +2,7 @@
 
 angular.module('stocktraderApp')
   .directive('ngShowOnParentHover', function () {
+    // show element when hovering over parent element for set time -- 900ms
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {

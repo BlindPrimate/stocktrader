@@ -9,9 +9,14 @@
 
 
 #stock-display {
+  @include col-md() {
+    min-height: 100%;
+  }
+  @include col-lg() {
+    min-height: 100%;
+  }
   padding: 30px 0;
   border-right: 4px solid #EEE;
-  min-height: 100%;
   label {
     display: block;
     font-weight: 400;
@@ -53,7 +58,9 @@
 #current-stocks {
   list-style-type: none;
   li {
-
+    &:hover {
+      background: tint($off-white, 40%);
+    }
   }
   .stock-card {
     @include unevenBorders(solid 4px #DDD, solid 1px #EEE);
@@ -64,8 +71,7 @@
   }
   .stock-card.active {
     @include unevenBorders(solid 4px $blue, solid 1px tint($blue, 50%));
-    background: #FFF;
-    margin-right: -10px;
+    background: tint($off-white, 40%);
     color: darken($blue, 25%);
   }
 
@@ -94,6 +100,7 @@
     font-size: 1.6em;
     font-weight: 300;
     float: right;
+    margin-right: 7x;
   }
 
   .delete-stock {
@@ -118,24 +125,24 @@
     z-index: 3;
   }
   #search-icon {
-    top: 20px;
+    top: 10px;
     left: 10px;
   }
   #clear-search-icon {
     cursor: pointer;
     padding: 0 4px;
-    top: 19px;
+    top: 9px;
     right: 6px;
     font-size: 1.2em;
     color: #ccc;
   }
   #searching {
-    top: 20px;
+    top: 10px;
     right: 30px;
     color: #AAA;
   }
   input {
-    @include border-radius(3px);
+    @include border-radius(5px);
     margin: 10px 0;
     padding-left: 30px;
   }
@@ -144,11 +151,22 @@
     left: 0;
     right: 0;
     z-index: 1;
-    width: 90%;
-    margin: 60px auto 0;
+    margin: 3px auto 0;
     background: white;
     border: 1px solid #ccc;
     box-shadow: 1px 1px 4px #DDD;
+    @include col-lg() {
+      width: 95%;
+    }
+    @include col-md() {
+      width: 100%;
+    }
+    @include col-sm() {
+      width: 100%;
+    }
+    @include col-xs() {
+      width: 100%;
+    }
     &:before {
       content: '';
       width: 0;
@@ -166,6 +184,10 @@
     }
     li {
       cursor: pointer; 
+      background: $off-white;
+      &:hover {
+        background: tint($off-white, 30%);
+      }
     }
     .search-symbol {
       font-size: 1.1em;
@@ -183,8 +205,22 @@
 }
 
 
-/*#chart {*/
-  /*border-left: 3px solid #EEE;*/
-/*}*/
+#chart {
+   @include col-lg() {
+      padding: 0 4%;
+    }
+    @include col-md() {
+      padding: 0 3%;
+    }
+    @include col-sm() {
+      padding: 0 2%;
+    }
+    @include col-xs() {
+      padding: 0 2%;
+    }
+}
+
+
+
 
 

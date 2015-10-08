@@ -13,15 +13,38 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 
 // color variables
 $blue: #6ACCFF;
-$off-white: #fcfdff;
+$off-white: #f7f8f9;
 $primary-font: #001328;
 
+
+// mixins
 
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
      -moz-border-radius: $radius;
       -ms-border-radius: $radius;
           border-radius: $radius;
+}
+
+@mixin col-xs() {
+    @media (max-width: 767px) {
+        @content;
+    }
+}
+@mixin col-sm() {
+    @media (min-width: 768px) and (max-width: 991px) {
+        @content;
+    }
+}
+@mixin col-md() {
+    @media (min-width: 992px) and (max-width: 1199px) {
+        @content;
+    }
+}
+@mixin col-lg() {
+    @media (min-width: 1200px) {
+        @content;
+    }
 }
 
 
@@ -34,12 +57,19 @@ $primary-font: #001328;
 html, body {
     @include roboto();
     color: $primary-font;
+    background: $off-white;
     height: 100%;
 }
 
-.ng-scope {
-    min-height: 100%;
-    height: 100%;
+.ng-scope { 
+    @include col-lg() {
+      min-height: 100%;
+      height: 100%;
+    }
+    @include col-md() {
+      min-height: 100%;
+      height: 100%;
+    }
 }
 
 .browsehappy {

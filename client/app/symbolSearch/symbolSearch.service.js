@@ -2,8 +2,7 @@
 
 angular.module('stocktraderApp')
   .factory('symbolSearch', function ($http) {
-    // Service logic
-    // ...
+    // retrives symbol search JSON data from markit api
 
     var url = 'http://dev.markitondemand.com/Api/v2/Lookup/jsonp?input='
 

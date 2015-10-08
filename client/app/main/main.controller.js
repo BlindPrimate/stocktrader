@@ -28,6 +28,7 @@ angular.module('stocktraderApp')
       return false
     }
 
+    // display chart data for all currently selected stocks
     var getChartData = function () {
       chartBuilder.getChartData($scope.viewingStocks, $scope.currSpan).then(function (chartData) {
         $scope.labels = chartData.data.labels;
@@ -36,7 +37,7 @@ angular.module('stocktraderApp')
       })
     }
 
-
+    // checks if symbol is currently being displayed on graph
     $scope.isCurrentlyGraphed = function (symbol) {
       if ($scope.viewingStocks.indexOf(symbol) === -1) {
         return false;
@@ -53,7 +54,7 @@ angular.module('stocktraderApp')
     }
 
 
-    // change displayed span of time of chart
+    // change displayed span of time of chart data
     $scope.changeTimeSpan = function (newSpan) {
       $scope.currSpan = newSpan;
     }
@@ -70,15 +71,31 @@ angular.module('stocktraderApp')
       }
     }
 
+
+
+    // watchers
+    
+    // updates chart data on change of selected stocks
     $scope.$watchCollection('viewingStocks', function () {
       getChartData();
     });
 
+    // updates chart data on change of displayed time span
     $scope.$watch('currSpan', function () {
       getChartData();
     });
 
+    // enables live symbol search
+    $scope.$watch('search.term', function () {
+      $scope.getSearchResults();
+    });
+
+    // end watchers
+
+    // retrive and display search results
     $scope.getSearchResults = function () {
+      // search.searching variable keeps 'no results' from showing before http
+      // data return
       $scope.search.searching = true;
       symbolSearch.search($scope.search.term).then(function (results) {
         if (results.data.length > 0) {
@@ -90,10 +107,6 @@ angular.module('stocktraderApp')
       });
     }
 
-    // enables live symbol search
-    $scope.$watch('search.term', function () {
-      $scope.getSearchResults();
-    });
 
     // retrieve all stock names w/ current prices
     $scope.getAllStocks = function () {
@@ -117,7 +130,12 @@ angular.module('stocktraderApp')
     };
 
     $scope.deleteStock = function(stock) {
-      $http.delete('/api/stocks/' + stock._id);
+      $http.delete('/api/stocks/' + stock._id)
+        .then(function (deletedStock) {
+          $scope.viewingStocks = _.remove($scope.viewingStocks, function (symbol) {
+            return symbol !== deletedStock.data.symbol;
+          });
+        });
     };
 
     $scope.$on('$destroy', function () {
